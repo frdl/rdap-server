@@ -20,4 +20,4 @@ composer require frdl/rdap-server
 - move Env\Dotenv to composer deps
 - const for isnstances root instance/OID
 - Instead of requesting all instances in a sequence, can we start asynchronous requests/threads (by e.g. exec, AMP framework, ...) and wait/collect (like Promise.all) for them in the main thread, to speed up the over all request response time for the end user???
-- And can we introduce a more powerful caching/proxy/index system, like and/or a global INDEX???
+- And can we introduce a more powerful caching/proxy/index system, like and/or a global INDEX??? (global meaning global in the focus of the instance building a web/federation-index)
