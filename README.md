@@ -14,3 +14,8 @@ composer require frdl/rdap-server
 
 #### DEMO
 [This demo](https://rdap.frdl.de/oid/1.3.6.1.4.1.37476.30.9) shows the way and where we get all the OIDplus instances.
+
+
+##### ToDo
+- move Env\Dotenv to composer deps
+- const for isnstances root instance/OID
