@@ -1,0 +1,66 @@
+{
+  "name": "frdl/rdap-server",
+  "type": "project",
+  "homepage" : "https://github.com/frdl/rdap-server",
+  "license": "MIT",
+  "description": "Rdap Server (OIDplus aware, with WHOIS-fallback/-remarks)",
+  "keywords": [
+    "rdap",
+    "server",
+    "whois",
+    "OIDplus",
+	"Frdlweb",
+	 "oid",
+	 "weid",
+	 "php"
+  ], 
+  "authors": [
+        {
+            "name": "Hiqdev Team",
+            "homepage": "https://github.com/hiqdev/rdap/"
+        },{
+			"name": "Daniel Marschall",
+			"email": "info@daniel-marschall.de",
+			"homepage": "https://www.daniel-marschall.de/"
+		},
+		{
+			"name": "Till Wehowski",
+			"email": "software@frdl.de",
+			"homepage": "https:\/\/webfan.de"
+		}
+    ],	  
+  "config": {
+    "platform-check" : false
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "php": ">=7.2",
+    "ext-json": "*",
+    "ext-intl": "*",
+    "hiqdev/rdap": "*",
+    "hiqdev/rdap-whois-proxy": "*",
+    "monolog/monolog": "*",
+    "php-di/php-di": "*",
+    "slim/psr7": "*",
+    "slim/slim": "*",
+	"symfony/cache" : "*",
+	"jeremykendall/php-domain-parser" : "*",
+	"frdl/shutdown-helper" : "*",
+	"frdl/php-floodprotection" : "*"
+  },
+  "require-dev": {	
+    "hiqdev/hidev-php": "dev-master",
+    "hiqdev/hidev-hiqdev": "dev-master"
+  },
+  "autoload": {
+	"classmap" : ["classes/"], 
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "scripts": {
+	"pre-autoload-dump" : "php -r \"unlink('vendor/hiqdev/rdap/src/Domain/Constant/Status.php');\"",  
+    "start": "php -S localhost:8080 -t public public/index.php"
+  }
+}
