@@ -26,3 +26,4 @@ composer require frdl/rdap-server
 - based on [hiqdev/rdap](https://github.com/hiqdev/rdap/)
 - ...[significant file so far](https://github.com/frdl/rdap-server/blob/main/src/Application/Actions/OID/GetOIDInfoAction.php)...
 - test
+- IO4/OIDplus/... - Plugable Adapters (for local instance)
