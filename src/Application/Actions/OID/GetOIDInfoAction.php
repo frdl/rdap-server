@@ -386,7 +386,7 @@ setMedia(string $media)
 
 		
 		if (!$item->isHit()) {   
-		    $item->expiresAfter(1 * 60 * 60);
+		    $item->expiresAfter(30 * 60);
            $frdlweb=[   ];
 			
 			$value = 'https://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
