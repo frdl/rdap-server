@@ -307,7 +307,7 @@ setMedia(string $media)
 	
 	
 	public function getCacheKey($type, $name){
-		return 'rdap.v55555'.$type.'.'.self::CACHE_VERSION.'-'.sha1_file(__FILE__).'-'
+		return 'rdap.v655555'.$type.'.'.self::CACHE_VERSION.'-'.sha1_file(__FILE__).'-'
 			.sha1($name).'l'.strlen($name).md5(@$_GET['partially'] !== 'include' ? '-' : @$_GET['partially']);
 	}
 	
@@ -316,7 +316,7 @@ setMedia(string $media)
 	    $cache= $this->cache;
 		$item = $cache->getItem($this->getCacheKey('oidplus', 'instances'));
 		if (!$item->isHit()) {   
-		    $item->expiresAfter(3 * 60 * 60);
+		    $item->expiresAfter(1 * 60 * 60);
 			$res = [];
 	         $inst=json_decode(file_get_contents(self::INSTANCES_URL));
 			 $subs = $inst->oidip->objectSection->subordinate;
@@ -412,7 +412,7 @@ setMedia(string $media)
 		}else{
 			$foundInstanceFor = false;
 			$InstanceFor = [];
-			$itemOidplusInstanceFor->expiresAfter(24 * 60 * 60);
+			$itemOidplusInstanceFor->expiresAfter(1 * 60 * 60);
 			$searchInstances = $this->getInstances();
 		}
 			
