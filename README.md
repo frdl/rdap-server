@@ -22,9 +22,9 @@ composer require frdl/rdap-server
 - Instead of requesting all instances in a sequence, can we start asynchronous requests/threads (by e.g. exec, AMP framework, ...) and wait/collect (like Promise.all) for them in the main thread, to speed up the over all request response time for the end user???
 - And can we introduce a more powerful caching/proxy/index system, like and/or a global INDEX??? (global meaning global in the focus of the instance building a web/federation-index)
 - RDAP-Conformance also for OIDplus objectTypes ???
+- test
+- IO4/OIDplus/... - Plugable Adapters (for local instance)
 
 ## Reference notes
 - based on [hiqdev/rdap](https://github.com/hiqdev/rdap/)
 - ...[significant file so far](https://github.com/frdl/rdap-server/blob/main/src/Application/Actions/OID/GetOIDInfoAction.php)...
-- test
-- IO4/OIDplus/... - Plugable Adapters (for local instance)
