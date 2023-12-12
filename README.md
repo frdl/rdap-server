@@ -6,6 +6,10 @@ This RDAP Server is [OIDplus](https://oidplus.com/) aware and provides a WHOIS r
 ````
 composer require frdl/rdap-server
 ````
+OR move into the directory and
+````
+composer install
+````
 - Make the `cache` and `logs` directory and their subdirectories writable.
 
 ### Customization
