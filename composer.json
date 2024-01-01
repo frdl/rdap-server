@@ -40,7 +40,7 @@
     "php": ">=7.2 | >=8.0",
     "ext-json": "*",
     "ext-intl": "*",
-    "hiqdev/rdap": "*",
+    "vendor-patch/rdap": "*",
     "hiqdev/rdap-whois-proxy": "*",
     "monolog/monolog": "*",
     "php-di/php-di": "*",
