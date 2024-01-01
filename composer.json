@@ -46,7 +46,8 @@
 	"symfony/cache" : "*",
 	"jeremykendall/php-domain-parser" : "*",
 	"frdl/shutdown-helper" : "*",
-	"frdl/php-floodprotection" : "*"
+	"frdl/php-floodprotection" : "*",
+	"env/dotenv" : "*"
   },
   "require-dev": {	
     "hiqdev/hidev-php": "dev-master",
