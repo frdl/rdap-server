@@ -46,10 +46,14 @@ return function (App $app) {
     $container = $app->getContainer();
 
     $app->get('/', function (Request $request, Response $response) {
+	//	die(getcwd().\DIRECTORY_SEPARATOR.'index.html');
+	 if(file_exists(getcwd().\DIRECTORY_SEPARATOR.'index.html') ){
+        $response->getBody()->write(trim(file_get_contents(getcwd().\DIRECTORY_SEPARATOR.'index.html')));		 
+	 }else{
         $response->getBody()->write(<<<HTMLCODE
 <script>
 (async()=>{
- var c = await fetch('/index.html'
+ var c = await fetch('https://rdap.frdlweb.de/index.html'
 		    +'?cache-bust=hiphophurra1q23-'+(new Date()).getFullYear()+'/'+((new Date()).getMonth()+1)+'/'+((new Date()).getUTCDate())
 		    );
  			  document.open(  );	
@@ -61,6 +65,7 @@ return function (App $app) {
 HTMLCODE
 								   
 								   );
+	 }//no index.html ->fetch
         return $response;
     });
     $app->group('/', function (Group $group)

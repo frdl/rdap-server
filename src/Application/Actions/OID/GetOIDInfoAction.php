@@ -110,7 +110,7 @@ class GetOIDInfoAction
 				   'other',
 				   'aid', 
 				   'mac', 
-				   
+				    'asn',
 				   'php',
 				   'fourcc',
 				   'java',
@@ -135,7 +135,8 @@ class GetOIDInfoAction
 	protected $container;
 	
 	protected $cache;
-
+    protected $domainProvider;
+	
     public function __construct(ContainerInterface $container, DomainProviderInterface $domainProvider, SerializerInterface $serializer, StreamFactoryInterface $streamFactory)
     {
 		$this->container=$container;
@@ -302,13 +303,17 @@ setMedia(string $media)
 			}
           
 					return is_string($result) ? json_decode($result) : $result;
-	}
+	}//domain
+	
+	
+	
+	
 	
 	
 	
 	public function getCacheKey($type, $name){
-		return 'rdap.v655555'.$type.'.'.self::CACHE_VERSION.'-'.sha1_file(__FILE__).'-'
-			.sha1($name).'l'.strlen($name).md5(@$_GET['partially'] !== 'include' ? '-' : @$_GET['partially']);
+		return 'rdap.58'.$type.'.'.self::CACHE_VERSION.'-'.sha1_file(__FILE__).'-'
+			.sha1($name).'l'.strlen($name);
 	}
 	
 	
@@ -327,10 +332,9 @@ setMedia(string $media)
 				 $instanceInfo = json_decode(file_get_contents('https://hosted.oidplus.com/viathinksoft/plugins/viathinksoft/publicPages/100_whois/whois/webwhois.php?query='.urlencode($sub).'$format=json'));
 					 
 					 
-					 
-				 	              $description = $instanceInfo->oidip->objectSection->description;
+					 	              $description = $instanceInfo->oidip->objectSection->description;
 							      $registryName = $instanceInfo->oidip->objectSection->name;							
-									preg_match("/System\sID\:6175446Last\sknown\sURL\:([^\s]+)\s/", $description, $matches);
+									preg_match("/System\sID\:\d\sLast\sknown\sURL\:([^\s]+)\s/", $description, $matches);
 					 if(!isset($matches[1])){
 						 preg_match("/URL\:([^\s]+)\s/", $description, $matches);
 					 }
@@ -361,6 +365,31 @@ setMedia(string $media)
 	}
 	
 	
+    
+	public function authoritativeLookup(string $name, string $type, ?int $limit = null){
+		if(!\Webfan\RDAP\Rdap::isValidType($type)){
+		  return false;	
+		}
+		$result = false;
+	    $cache= $this->cache;
+		$item = $cache->getItem($this->getCacheKey('authoritative-lookup', $name.':'.$type));
+		if (!$item->isHit()) {   
+		    $item->expiresAfter(is_int($limit) ? $limit : 3 * 60);
+			
+			$client = new \Webfan\RDAP\Rdap($type);				
+					
+			$result =  $client->search($name);				
+		 //  $result = json_encode($result, \JSON_PRETTY_PRINT );
+			
+            $item->set($result);
+			$cache->save($item);
+		}
+		return $item->get();
+	}
+	
+	
+	
+	
     public function __invoke(Request $request, Response $response, array $args): Response
     {
         if (empty($args['name'])) {
@@ -376,9 +405,15 @@ setMedia(string $media)
 		
 		set_time_limit(180);
 	   
-	    $cache= $this->cache;
-		
+		$authResult= $this->authoritativeLookup($args['name'], $args['type'], 8 * 60);		
+		if( false !== $authResult ){			 			
+		  return $response->withHeader('Content-Type', 'application/rdap+json')
+            ->withStatus(200)
+            ->withBody($this->streamFactory->createStream($authResult));
+		}//return
 	 
+		
+	    $cache= $this->cache;	 
 		
 		$item = $cache->getItem($this->getCacheKey('type:'.$args['type'], 'name:'.$args['name']));
 		$itemOidplusInstanceFor = $cache->getItem($this->getCacheKey('oidplus-instance-for', $args['type'].':'.$args['name']));
@@ -386,7 +421,7 @@ setMedia(string $media)
 
 		
 		if (!$item->isHit()) {   
-		    $item->expiresAfter(30 * 60);
+		    $item->expiresAfter(8 * 60);
            $frdlweb=[   ];
 			
 			$value = 'https://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
@@ -446,16 +481,17 @@ setMedia(string $media)
 				$theInfo = @file_get_contents($url);
 				if(false === $theInfo)continue;
 				$theInfo = @json_decode($theInfo);
-				if(!is_object($theInfo) || null === $theInfo)continue;
+				if(!is_object($theInfo) || null === $theInfo || false === $theInfo)continue;
 				$_found = 'Found' === $theInfo->oidip->querySection->result
 					&& 'Information partially available' !== $theInfo->oidip->objectSection->status;			
 				
 							
-				if('Found' !== $theInfo->oidip->querySection->result && 'Information partially available' !== $theInfo->oidip->objectSection->status){
+				if('Found' !== $theInfo->oidip->querySection->result
+				   && 'Information partially available' !== $theInfo->oidip->objectSection->status){
 				  continue;	
 				}
 				
-				if(!$_found && (!isset($_GET['partially']) || $_GET['partially'] !== 'include') ){
+				if(!$_found && (isset($_GET['partially']) && $_GET['partially'] === 'first') ){
 					 continue;	
 				}
 				

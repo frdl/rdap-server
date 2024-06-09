@@ -1,8 +1,8 @@
-
-<! DOCTYPE html>
+<!DOCTYPE html>
 <!-- Copyright (c) 2015-2016 ARIN -->
 <!-- edited by Frdlweb - you are encouraged to edit this design template for your needs -->
 <!-- you can download the linked script and style files from CDN to your server... -->
+<!-- add your server to the rdapServerSelect select-box -->
 <html>
   <head>
   <!-- 	<base href="/" />-->
@@ -212,12 +212,12 @@
 				<option value="" selected>- automatically select prefered server (RECOMMENDED)-</option>
 				<option value="https://rdap.denic.de/">DENIC RDAP</option>
 				<option value="https://rdap.frdlweb.de/"
-						rdap-object-types="domain,oid,weid,guid,aid"
+						rdap-object-types="domain,oid,weid,guid,aid,asn"
+						default-rdap-server  
 						>Frdlweb RDAP</option>
 				<option value="https://rdap.arin.net/registry/" 
 						rdap-object-types="autnum,ipv4,ipv6">ARIN RDAP</option>
 				<option value="https://rdap.frdl.de/"
-						default-rdap-server  
 						rdap-object-types="domain,oid,weid,guid,aid">Frdl RDAP</option>
 			</select>
 			

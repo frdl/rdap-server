@@ -1,0 +1,9 @@
+<?php
+
+namespace IO4;
+
+class Webfat
+{
+    use \Webfan\Webfat\getWebfatTrait;
+}
+__halt_compiler();----SIGNATURE:----qZG1bNI6KAp4JNu47zifndv2Q/qi2Zs1tsc//qqKABtm8jKMXRLxF/CVypdULQqiLoKy8hEN0d8uT4jdTeQqt3T8fB1NA9FDlcnCpCEPFW9VhLE8/hzj5//JsqnQBef0abjgRTqc6J85dbx4uDTeOWDk93p8GF4YsGOenOtLqpZ105jyGWe+i03eSM0gjwh/NrApSE0OuP+sCoS4tKMQbYvD4q4zYf+mVQZc8Du/bJMlvEqpwTWvrRz2KuRf4D+I9008wNt9s13OIzfKISi0woRFGkMhGYmYN6drFbZNV+F7SuH+ksCCYub7h46l70xoMcOWkicC60IMj6XjgSAhjP/g06FB6JsJKvbgmZQQ2vZydPqCBhBrh8bQLr+bHriMIcn10kCVHt81d73hBh78IzN9ByqdqBc+iuGpMCaD02++H0pCuHbVyD+gj1pbaO6i2XDaAKpQ+sm2mRsUvpzA8hrPEItAM2r9un10Ko6AW+RLlrNVjqmKbb0aFvjeGfEkiQqSdkRUwrtwi8v9bc23AA6VfH+0tjm2AZrpTzVEbSZe7mMMveAA5Q5Hw3sIstleRDv4SgSB6BXL4IezXudndL0twdLcJdd/1Pyo7jBI9srMR4UyOWFoe5lVHcHzkWP/L8vn8LkXbv7gd4lSDHN5Nt5oEgiy+u2ccsa090APUBk=----ATTACHMENT:----ODE0MzQ2ODEzNDQyODc1NSA3MjA4OTcyMzc2NTEzOTY3IDE2NDUyMTExMDQ1MzE2NTU=

@@ -32,10 +32,22 @@ use Psr\SimpleCache\CacheInterface;
         $resultSearch = $whoisDomainProvider->get(DomainName::of('google.com'));
         $this->assertTrue(true);
 		*/
+
+			$directory = __DIR__.'/../cache/rdap/';
+			if(!is_dir($directory))mkdir($directory, 0775, true);
+
+			$directory = __DIR__.'/../cache/tld/';		
+			if(!is_dir($directory))mkdir($directory, 0775, true);
+
+
+
+
+
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
 		'rdap.cache' => function (ContainerInterface $c) {
 			$directory = __DIR__.'/../cache/rdap/';
+			if(!is_dir($directory))mkdir($directory, 0775, true);
 			$namespace = 'rdap';
 			//$defaultLifetime = 24 * 60 * 60;
 			$defaultLifetime = 3 * 60 * 60;
@@ -56,7 +68,8 @@ return function (ContainerBuilder $containerBuilder) {
 			return $cache;
 		},
 		'tld.cache' => function (ContainerInterface $c) {
-			$directory = __DIR__.'/../cache/tld/';			
+			$directory = __DIR__.'/../cache/tld/';		
+			if(!is_dir($directory))mkdir($directory, 0775, true);
 			$cache = new Cache2($directory);			
 			return $cache;
 		},		

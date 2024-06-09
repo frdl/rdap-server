@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80"
+    volumes:
+      - ./:/app
+      - ./.docker/nginx/etc/nginx/conf.d:/etc/nginx/conf.d
+      - ./.docker/nginx/var/log/nginx:/var/log/nginx
+    networks:
+      - local-network
+
+  php-fpm:
+    image: hiqdev/php:7.3-fpm
+    volumes:
+      - ./:/app
+    networks:
+      - local-network
+
+networks:
+  local-network:
+    driver: bridge

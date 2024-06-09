@@ -116,7 +116,9 @@ if(!is_dir(__DIR__ . '/../cache/container/')){
 
 // Instantiate PHP-DI ContainerBuilder
 $containerBuilder = new ContainerBuilder();
-
+ if(!is_dir(__DIR__ . '/../cache/container')){
+	 mkdir(__DIR__ . '/../cache/container', 0775, true); 
+ }
 //if (false) { // Should be set to true in production
 	$containerBuilder->enableCompilation(__DIR__ . '/../cache/container');
 //}
@@ -145,6 +147,9 @@ $container = $containerBuilder->build();
     exit("Too Many Requests, try again later!");
  }
 
+/* 
+  @ToDO: Prune cache / dependencies loader...
+
 		$ShutdownTasks = \frdlweb\Thread\ShutdownTasks::mutex();
         $ShutdownTasks(function($container, $FloodProtection, $tempRdapDir, $CacheDir, $maxCacheTime){
 			@\ignore_user_abort(true);
@@ -160,7 +165,7 @@ $container = $containerBuilder->build();
 		    }
         }, $container, $FloodProtection, __DIR__.'/../cache/rdap/', __DIR__ . '/../cache/flood-protection/', 31 * 24 * 60 * 60);	 
 
-
+*/
 
 
 // Instantiate the app

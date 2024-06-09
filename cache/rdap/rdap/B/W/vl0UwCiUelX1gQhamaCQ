@@ -1,0 +1,162 @@
+1717899054
+rdap.58authoritative-lookup.0.2.2-30faf099c88f9891f974b10e6c945a5e133cf09c-512cc677cb67e939bfd4b9328b7f254f34c2c5e2l27
+s:9723:"{
+    "port43": "whois.viathinksoft.de",
+    "name": "oid:1.3.6.1.4.1.37553.8.8.2",
+    "objectClassName": "oid",
+    "handle": "oid:1.3.6.1.4.1.37553.8.8.2",
+    "parentHandle": "oid:1.3.6.1.4.1.37553.8.8",
+    "rdapConformance": [
+        "rdap_level_0",
+        "oidplus_oidip",
+        "frdlweb_ini_dot",
+        "redirect_with_content"
+    ],
+    "links": [
+        {
+            "href": "https:\/\/registry.frdl.de\/rdap\/oid\/1.3.6.1.4.1.37553.8.8.2",
+            "type": "application\/rdap+json",
+            "title": "Information about the oid 1.3.6.1.4.1.37553.8.8.2",
+            "value": "https:\/\/webfan.de\/apps\/registry\/rdap\/oid\/1.3.6.1.4.1.37553.8.8.2",
+            "rel": "self"
+        },
+        {
+            "href": "https:\/\/webfan.de\/apps\/registry\/?goto=oid%3A1.3.6.1.4.1.37553.8.8.2",
+            "type": "text\/html",
+            "title": "Information about the oid 1.3.6.1.4.1.37553.8.8.2 in the online repository",
+            "value": "https:\/\/webfan.de\/apps\/registry\/?goto=oid%3A1.3.6.1.4.1.37553.8.8.2",
+            "rel": "alternate"
+        }
+    ],
+    "remarks": [
+        {
+            "title": "Availability",
+            "description": [
+                "The OID 1.3.6.1.4.1.37553.8.8.2 is known."
+            ],
+            "links": []
+        },
+        {
+            "title": "Description",
+            "description": [
+                "<p>More information at <a href=\"https:\/\/www.viathinksoft.de\/\">https:\/\/www.viathinksoft.de\/<\/a><\/p>"
+            ],
+            "links": [
+                {
+                    "href": "https:\/\/webfan.de\/apps\/registry\/?goto=oid%3A1.3.6.1.4.1.37553.8.8.2",
+                    "type": "text\/html",
+                    "title": "Information about the oid 1.3.6.1.4.1.37553.8.8.2 in the online repository",
+                    "value": "https:\/\/webfan.de\/apps\/registry\/?goto=oid%3A1.3.6.1.4.1.37553.8.8.2",
+                    "rel": "alternate"
+                }
+            ]
+        },
+        {
+            "title": "OID-IP Result",
+            "description": [
+                "Additional OID-IP Result info from RDAP-plugin 1.3.6.1.4.1.37476.2.5.2.4.1.100 was added."
+            ],
+            "links": [
+                {
+                    "href": "https:\/\/webfan.de\/apps\/registry\/plugins\/viathinksoft\/publicPages\/100_whois\/whois\/webwhois.php?query=oid%3A1.3.6.1.4.1.37553.8.8.2",
+                    "type": "text\/plain",
+                    "title": "OIDIP Result for the oid 1.3.6.1.4.1.37553.8.8.2 (Plaintext)",
+                    "value": "https:\/\/webfan.de\/apps\/registry\/plugins\/viathinksoft\/publicPages\/100_whois\/whois\/webwhois.php?query=oid%3A1.3.6.1.4.1.37553.8.8.2",
+                    "rel": "alternate"
+                },
+                {
+                    "href": "https:\/\/webfan.de\/apps\/registry\/plugins\/viathinksoft\/publicPages\/100_whois\/whois\/webwhois.php?query=oid%3A1.3.6.1.4.1.37553.8.8.2$format=json",
+                    "type": "application\/json",
+                    "title": "OIDIP Result for the oid 1.3.6.1.4.1.37553.8.8.2 (JSON)",
+                    "value": "https:\/\/webfan.de\/apps\/registry\/plugins\/viathinksoft\/publicPages\/100_whois\/whois\/webwhois.php?query=oid%3A1.3.6.1.4.1.37553.8.8.2$format=json",
+                    "rel": "alternate"
+                },
+                {
+                    "href": "https:\/\/webfan.de\/apps\/registry\/plugins\/viathinksoft\/publicPages\/100_whois\/whois\/webwhois.php?query=oid%3A1.3.6.1.4.1.37553.8.8.2$format=xml",
+                    "type": "application\/xml",
+                    "title": "OIDIP Result for the oid 1.3.6.1.4.1.37553.8.8.2 (XML)",
+                    "value": "https:\/\/webfan.de\/apps\/registry\/plugins\/viathinksoft\/publicPages\/100_whois\/whois\/webwhois.php?query=oid%3A1.3.6.1.4.1.37553.8.8.2$format=xml",
+                    "rel": "alternate"
+                }
+            ]
+        },
+        {
+            "title": "frdlweb_ini_dot is available",
+            "description": [
+                "Additional RDAP-extension Result from 1.3.6.1.4.1.37476.9000.108.1276945.19361.24174.17741 was added."
+            ],
+            "links": [
+                {
+                    "href": "https:\/\/hosted.oidplus.com\/viathinksoft\/?goto=oid%3A1.3.6.1.4.1.37476.9000.108.1276945.19361.24174.17741",
+                    "type": "text\/plain",
+                    "title": "frdlweb_ini_dot for the oid 1.3.6.1.4.1.37553.8.8.2 (Plaintext)",
+                    "value": "https:\/\/hosted.oidplus.com\/viathinksoft\/?goto=oid%3A1.3.6.1.4.1.37476.9000.108.1276945.19361.24174.17741",
+                    "rel": "help"
+                }
+            ]
+        }
+    ],
+    "oidplus_oidip": {
+        "$schema": "urn:ietf:id:draft-viathinksoft-oidip-07",
+        "oidip": {
+            "querySection": {
+                "query": "oid:1.3.6.1.4.1.37553.8.8.2$format=json",
+                "result": "Found"
+            },
+            "objectSection": {
+                "object": "oid:1.3.6.1.4.1.37553.8.8.2",
+                "status": "Information available",
+                "name": "ViaThinkSoft WEID",
+                "description": "More information at https:\/\/www.viathinksoft.de\/ (https:\/\/www.viathinksoft.de\/)",
+                "url": "https:\/\/webfan.de\/apps\/registry\/?goto=oid%3A1.3.6.1.4.1.37553.8.8.2",
+                "asn1-notation": "{ iso(1) identified-organization(3) dod(6) internet(1) private(4) enterprise(1) frdlweb(37553) weid(8) public(8) 2 }",
+                "iri-notation": "\/ISO\/Identified-Organization\/6\/1\/4\/1\/Frdlweb\/weid\/8\/2",
+                "canonical-identifier": "oid:1.3.6.1.4.1.37553.8.8.2",
+                "handle-identifier": "oid:1.3.6.1.4.1.37553.8.8.2",
+                "alternate-identifier": [
+                    "aid:D276000186B200055912E35B64AEC566",
+                    "guid:5912e35b-4720-8000-a6d3-e14f30cffefe",
+                    "guid:605e40cf-d500-3d1b-8100-63bf368203a1",
+                    "guid:ffe62277-90ab-5c0c-9e23-301d02d5d499",
+                    "mac:62-CF-E4-AE-C5-66",
+                    "mac:63-CF-E4-AE-C5-66",
+                    "weid:8-2-2",
+                    "x500dn:\/dc=com\/dc=example\/cn=oidplus\/1.3.6.1.4.1.37476.2.5.2.9.4.1=1494410075\/1.3.6.1.4.1.37476.2.5.2.9.4.2=1689175398"
+                ],
+                "parent": "oid:1.3.6.1.4.1.37553.8.8 (public)",
+                "created": "2019-11-07 20:08:35"
+            },
+            "raSection": {
+                "ra": "ViaThinkSoft",
+                "status": "Information available",
+                "email": "PIDH0021-dd572d647545f48a1ce5436841ebaef32db00bcf@alias.webfan.de",
+                "created": "2019-11-07 20:08:35"
+            }
+        },
+        "signature": "eyJ0eXAiOiJPSUQtSVAiLCJjdHkiOiJ0ZXh0XC9qc29uIiwiYWxnIjoiUlMyNTYifQ==.eyIkc2NoZW1hIjoidXJuOmlldGY6aWQ6ZHJhZnQtdmlhdGhpbmtzb2Z0LW9pZGlwLTA3Iiwib2lkaXAiOnsib2JqZWN0U2VjdGlvbiI6eyJhbHRlcm5hdGUtaWRlbnRpZmllciI6WyJhaWQ6RDI3NjAwMDE4NkIyMDAwNTU5MTJFMzVCNjRBRUM1NjYiLCJndWlkOjU5MTJlMzViLTQ3MjAtODAwMC1hNmQzLWUxNGYzMGNmZmVmZSIsImd1aWQ6NjA1ZTQwY2YtZDUwMC0zZDFiLTgxMDAtNjNiZjM2ODIwM2ExIiwiZ3VpZDpmZmU2MjI3Ny05MGFiLTVjMGMtOWUyMy0zMDFkMDJkNWQ0OTkiLCJtYWM6NjItQ0YtRTQtQUUtQzUtNjYiLCJtYWM6NjMtQ0YtRTQtQUUtQzUtNjYiLCJ3ZWlkOjgtMi0yIiwieDUwMGRuOi9kYz1jb20vZGM9ZXhhbXBsZS9jbj1vaWRwbHVzLzEuMy42LjEuNC4xLjM3NDc2LjIuNS4yLjkuNC4xPTE0OTQ0MTAwNzUvMS4zLjYuMS40LjEuMzc0NzYuMi41LjIuOS40LjI9MTY4OTE3NTM5OCJdLCJhc24xLW5vdGF0aW9uIjoieyBpc28oMSkgaWRlbnRpZmllZC1vcmdhbml6YXRpb24oMykgZG9kKDYpIGludGVybmV0KDEpIHByaXZhdGUoNCkgZW50ZXJwcmlzZSgxKSBmcmRsd2ViKDM3NTUzKSB3ZWlkKDgpIHB1YmxpYyg4KSAyIH0iLCJjYW5vbmljYWwtaWRlbnRpZmllciI6Im9pZDoxLjMuNi4xLjQuMS4zNzU1My44LjguMiIsImNyZWF0ZWQiOiIyMDE5LTExLTA3IDIwOjA4OjM1IiwiZGVzY3JpcHRpb24iOiJNb3JlIGluZm9ybWF0aW9uIGF0IGh0dHBzOi8vd3d3LnZpYXRoaW5rc29mdC5kZS8gKGh0dHBzOi8vd3d3LnZpYXRoaW5rc29mdC5kZS8pIiwiaGFuZGxlLWlkZW50aWZpZXIiOiJvaWQ6MS4zLjYuMS40LjEuMzc1NTMuOC44LjIiLCJpcmktbm90YXRpb24iOiIvSVNPL0lkZW50aWZpZWQtT3JnYW5pemF0aW9uLzYvMS80LzEvRnJkbHdlYi93ZWlkLzgvMiIsIm5hbWUiOiJWaWFUaGlua1NvZnQgV0VJRCIsIm9iamVjdCI6Im9pZDoxLjMuNi4xLjQuMS4zNzU1My44LjguMiIsInBhcmVudCI6Im9pZDoxLjMuNi4xLjQuMS4zNzU1My44LjggKHB1YmxpYykiLCJzdGF0dXMiOiJJbmZvcm1hdGlvbiBhdmFpbGFibGUiLCJ1cmwiOiJodHRwczovL3dlYmZhbi5kZS9hcHBzL3JlZ2lzdHJ5Lz9nb3RvPW9pZCUzQTEuMy42LjEuNC4xLjM3NTUzLjguOC4yIn0sInF1ZXJ5U2VjdGlvbiI6eyJxdWVyeSI6Im9pZDoxLjMuNi4xLjQuMS4zNzU1My44LjguMiRmb3JtYXQ9anNvbiIsInJlc3VsdCI6IkZvdW5kIn0sInJhU2VjdGlvbiI6eyJjcmVhdGVkIjoiMjAxOS0xMS0wNyAyMDowODozNSIsImVtYWlsIjoib2lkcmFAdmlhdGhpbmtzb2Z0LmRlIiwicmEiOiJWaWFUaGlua1NvZnQiLCJzdGF0dXMiOiJJbmZvcm1hdGlvbiBhdmFpbGFibGUifX19.NpDXWxZVYhbst8tVxuyzUyRlt\/lq+xUORq\/BmKjPrmBZ7KZV5EefEUW\/RWMcwzifhVZ4fmyBcgXgZnu6mo85xmdHbv5g1EX5wR4ufR0x\/w1rJueo\/kvIr3mmtmqtpDxqNoBGZVeuqxDWjZTc\/pARPM4cHq8YT1ljDTXLGEKLU1hcnPqSUNIhFONnXUqHgjKA9kejLnNAYc4yn9G\/ssejCnJPKLDRfecPLgNd8wKp\/SiJtm6zxDhOK1GPT7a5i5lEjE7d7I3mjfy6DymlyxoY4a8Rwyj65m4PC6qMpDyGymPz5koQT+h6Rn4j5Ngdk2X5NTyBW+SeOK9wtDHgbXlYVQ=="
+    },
+    "oidplus_oidip_properties": [
+        "$schemma",
+        "oidip"
+    ],
+    "frdlweb_ini_dot": [],
+    "notices": [
+        {
+            "title": "Authentication Policy",
+            "description": [
+                "Access to sensitive data for users with proper credentials."
+            ],
+            "links": [
+                {
+                    "value": "https:\/\/webfan.de\/apps\/registry\/rdap\/help",
+                    "rel": "alternate",
+                    "type": "text\/html",
+                    "href": "https:\/\/webfan.de\/apps\/registry\/?goto=oidplus%3Aresources%24OIDplus%2Fprivacy_documentation.html"
+                }
+            ]
+        }
+    ],
+    "statuses": [
+        "active"
+    ]
+}";
