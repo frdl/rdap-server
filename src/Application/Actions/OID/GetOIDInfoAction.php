@@ -401,8 +401,10 @@ setMedia(string $media)
        
 	 	if('x-oidplus-domain'===$args['type']){
 		  $args['type'] = 'domain';	
-		}
-		
+		}		
+	 	if('domain'===$args['type']){
+		  $args['name'] = strtolower( $args['name']);	
+		}		
 		set_time_limit(180);
 	   
 		$authResult= $this->authoritativeLookup($args['name'], $args['type'], 8 * 60);		
