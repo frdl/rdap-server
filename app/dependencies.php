@@ -75,7 +75,21 @@ return function (ContainerBuilder $containerBuilder) {
 		},		
 		'tld.cache.ttl' => 3600,
 		Manager::class => function (ContainerInterface $c) {
-			return new Manager($c->get('tld.cache'), $c->get(CurlHttpClient::class),$c->get('tld.cache.ttl'));
+			$pslManager = new Pdp\PublicSuffixListManager();
+			
+           //https://stackoverflow.com/questions/8272805/extract-registered-domain-from-url-based-on-public-suffix-list
+
+			$pslManager = new \Pdp\PublicSuffixListManager();
+
+			$parser = new \Pdp\Parser($pslManager->getList());
+            return $parser;
+			//echo $parser->getRegisterableDomain('www.scottwills.co.uk');
+			/*
+			return new Manager($c->get('tld.cache'),
+							  // $c->get(CurlHttpClient::class),
+							   null,
+							   $c->get('tld.cache.ttl'));
+							   */
 		},
         LoggerInterface::class => function (ContainerInterface $c) {
             $settings = $c->get('settings');
@@ -96,7 +110,7 @@ return function (ContainerBuilder $containerBuilder) {
 			return $c->get(Manager::class);
 		},		
 		
-	    CurlHttpClient::class => \DI\autowire(CurlHttpClient::class),
+	   // CurlHttpClient::class => \DI\autowire(CurlHttpClient::class),
         SerializerInterface::class => \DI\autowire(SymfonySerializer::class),
       //  DomainProviderInterface::class => DI\autowire(WhoisDomainProvider::class),
 		  DomainProviderInterface::class => function (ContainerInterface $container) { 
