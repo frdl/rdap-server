@@ -1,0 +1,12 @@
+{
+  "name" : "frdl/shutdown-helper",
+  "type" : "library",
+  "description": "Reverse order register_shutdown manager.",	  
+  "license": ["MIT"],	  
+  "require" : {
+	    "php": ">=5.3.6"
+  },	  
+  "autoload": {
+            "classmap": ["src/ShutdownTasks.php"]
+  }  
+}

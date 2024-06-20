@@ -1,0 +1,5 @@
+package:
+    type: library
+    name: rdap-whois-proxy
+    title: 'A bridge from WHOIS to RDAP'
+    keywords: 'rdap, whois, proxy'

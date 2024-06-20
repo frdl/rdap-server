@@ -1,0 +1,50 @@
+{
+    "name": "frdl/oid-connect-rdap",
+    "description": "OID-Connect RDAP Client (Whois via RDAP)",
+    "license": ["GPL-3.0-or-later", "MIT"],
+    "keywords": [
+        "rdap",
+        "whois",
+        "rdap-client",
+        "rdap-php",
+        "asn",
+        "ip",
+        "nameserver",
+        "oid",
+        "weid",
+        "oid-connect"
+    ],
+    "require": {
+        "php": ">= 8.1",
+        "ext-intl": "*",
+        "ext-json": "*",
+	"metaregistrar/rdap-client" : "*"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.7.2",
+        "slevomat/coding-standard": "^8.13",
+        "gbxyz/rdap-bootstrap-server" : "*"
+    },       
+    "provide": {
+        "arrayaccess/rdap-client" : "*"
+    },
+    "config": {
+        "allow-plugins": {
+          "dealerdirect/phpcodesniffer-composer-installer": true,            			
+            "airmad/*": true,
+			"civicrm/*": true,
+			"composer/*": true,
+			"frdl/*": true,
+			"webfan3/*": true,
+			"kylekatarnls/update-helper": true,
+			"smoren/mushroom-hook-manage" :true
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "ArrayAccess\\RdapClient\\" : "src/",            
+            "Webfan\\RDAPClient\\" : "src/Webfan/",	           
+            "Webfan\\RDAP\\" : "src/Webfan/RDAP/"
+        }
+    }
+}

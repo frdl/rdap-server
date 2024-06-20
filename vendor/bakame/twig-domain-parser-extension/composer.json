@@ -1,0 +1,69 @@
+{
+    "name": "bakame/twig-domain-parser-extension",
+    "description": "Twig extension using PHP Domain parser.",
+    "homepage": "https://github.com/bakame-php/twig-domain-parser-extension",
+    "license": "MIT",
+    "keywords": [
+        "twig",
+        "extension",
+        "icann",
+        "iana",
+        "domain parser"
+    ],
+    "authors": [
+        {
+            "name": "Ignace Nyamagana Butera",
+            "homepage": "http://nyamsprod.com",
+            "role": "Developer"
+        },
+        {
+            "name": "Contributors",
+            "homepage": "https://github.com/bakame-php/twig-domain-parser-extension/graphs/contributors"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "jeremykendall/php-domain-parser": "^5.4",
+        "twig/twig": "^2.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.7",
+        "phpstan/phpstan": "^0.10",
+        "phpstan/phpstan-phpunit": "^0.10",
+        "phpstan/phpstan-strict-rules": "^0.10",
+        "phpunit/phpunit": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bakame\\Twig\\Pdp\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "BakameTest\\Twig\\Pdp\\": "tests/"
+        }
+	},
+    "scripts": {
+        "phpcs": "php-cs-fixer fix -vv --diff --dry-run --allow-risky=yes",
+        "phpstan-src": "phpstan analyse -l 7 -c phpstan.src.neon src",
+        "phpstan-tests": "phpstan analyse -l 7 -c phpstan.tests.neon tests",
+        "phpstan": [
+            "@phpstan-src",
+            "@phpstan-tests"
+        ],
+        "phpunit": "phpunit --coverage-text",
+        "test": [
+            "@phpunit",
+            "@phpcs",
+            "@phpstan"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

@@ -1,0 +1,38 @@
+{
+    "name": "hiqdev/rdap-whois-proxy",
+    "type": "project",
+    "description": "Rdap Whois Proxy",
+    "keywords": [
+        "rdap",
+        "whois",
+        "proxy"
+    ],
+    "require": {
+        "hiqdev/rdap": "dev-master",
+        "io-developer/php-whois": "^3.4.1"
+    },
+    "require-dev": {
+        "hiqdev/hidev": "dev-master",
+        "hiqdev/hidev-php": "dev-master",
+        "hiqdev/hidev-hiqdev": "dev-master",
+        "phpunit/phpunit": "^8.3.4",
+        "vimeo/psalm": "^3.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "hiqdev\\rdap\\WhoisProxy\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "hiqdev\\rdap\\WhoisProxy\\tests\\": "tests"
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ],
+    "minimum-stability": "dev"
+}

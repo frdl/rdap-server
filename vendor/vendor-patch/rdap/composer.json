@@ -1,0 +1,85 @@
+{
+    "name": "vendor-patch/rdap",
+    "type": "project",
+    "description": "Forked from hiqdev: Registration Data Access Protocol – core objects implemantation package accodring to the RFC 7483",
+    "keywords": [
+        "rdap",
+        "php",
+        "whois"
+    ],
+    "homepage": "https://github.com/hiqdev/rdap",
+    "license": "BSD-3-Clause",
+    "support": {
+        "email": "support@hiqdev.com",
+        "source": "https://github.com/hiqdev/rdap",
+        "issues": "https://github.com/hiqdev/rdap/issues",
+        "wiki": "https://github.com/hiqdev/rdap/wiki",
+        "forum": "http://forum.hiqdev.com/"
+    },
+    "authors": [
+        {
+            "name": "Andrii Vasyliev",
+            "role": "Project lead",
+            "email": "sol@hiqdev.com",
+            "homepage": "http://hipanel.com/"
+        },
+        {
+            "name": "Dmitry Naumenko",
+            "role": "Lead backend developer",
+            "email": "d.naumenko.a@gmail.com",
+            "homepage": "http://silverfire.me/"
+        },
+        {
+            "name": "Andrey Klochok",
+            "role": "Lead frontend developer",
+            "email": "andreyklochok@gmail.com",
+            "homepage": "http://hiqdev.com/"
+        },
+        {
+            "name": "Yuriy Myronchuk",
+            "role": "QA Lead",
+            "email": "bladeroot@gmail.com",
+            "homepage": "http://hiqdev.com/"
+        }
+    ],
+    "provide": {
+        "hiqdev/rdap": "dev-master" 
+    },
+    "require": {
+        "league/uri": "*",
+        "marc-mabe/php-enum": "*",
+        "jeroendesloovere/vcard": "*",
+        "ext-mbstring": "*",
+        "ext-intl": "*",
+        "doctrine/annotations": "*",
+        "symfony/serializer": "*",
+        "symfony/property-info": "*",
+        "symfony/property-access": "*",
+        "sabre/vobject": "*",
+        "phpdocumentor/reflection-docblock": "*",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "hiqdev/hidev": "dev-master",
+        "hiqdev/hidev-php": "dev-master",
+        "hiqdev/hidev-hiqdev": "dev-master",
+        "phpunit/phpunit": "^8.3.4",
+        "vimeo/psalm": "^3.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "hiqdev\\rdap\\core\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "hiqdev\\rdap\\core\\tests\\": "tests"
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
+}

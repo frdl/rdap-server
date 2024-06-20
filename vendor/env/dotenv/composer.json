@@ -1,0 +1,16 @@
+{
+    "name": "env/dotenv",
+    "type": "library",
+    "description": "A simple, tiny and lightweight PHP .env loader",
+    "keywords": ["environment", "env", "dotenv"],
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^8"
+    },
+    "autoload" : {
+        "psr-4": {
+            "Env\\": "./src"
+        }
+    }
+}
