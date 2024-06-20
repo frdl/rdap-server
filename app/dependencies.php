@@ -91,11 +91,11 @@ return function (ContainerBuilder $containerBuilder) {
 
             return $logger;
         },
-		
+	 
 		'manager.pdp'  => function (ContainerInterface $c) {
 			return $c->get(Manager::class);
 		},		
-		
+		 
 	    CurlHttpClient::class => \DI\autowire(CurlHttpClient::class),
         SerializerInterface::class => \DI\autowire(SymfonySerializer::class),
       //  DomainProviderInterface::class => DI\autowire(WhoisDomainProvider::class),

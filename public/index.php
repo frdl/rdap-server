@@ -210,7 +210,7 @@ $errorMiddleware->setDefaultErrorHandler($errorHandler);
 	 Helper::sendCorsHeaders([(isset($_SERVER['HTTP_ORIGIN']))?$_SERVER['HTTP_ORIGIN']:'*'], '*');	
 
 // Run App & Emit Response
-$response = $app->handle($request);
+$response = @$app->handle($request);
 Helper::status($response->getStatusCode());
 $responseEmitter = new ResponseEmitter();
 ob_start(function($c) use($response) {

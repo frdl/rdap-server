@@ -45,6 +45,7 @@
     "slim/slim": "*",
 	"symfony/cache" : "*",
 	"jeremykendall/php-domain-parser" : "*",
+	"bakame/twig-domain-parser-extension": "*",
 	"frdl/shutdown-helper" : "*",
 	"frdl/php-floodprotection" : "*",
 	"env/dotenv" : "*",

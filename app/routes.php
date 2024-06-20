@@ -71,14 +71,15 @@ HTMLCODE
     $app->group('/', function (Group $group)
 				//(Group $group) 
 				use ($app, $container) {
-        $app->get('/domain-quickinfo/{domainName}', GetDomainInfoAction::class)
+      	//		$app->get('/{type:'.implode('|', GetOIDInfoAction::TYPES).'}/{name}', GetOIDInfoAction::class)
+         $app->get('/domain-quickinfo/{name}', GetDomainInfoAction::class)
 			// ->conditions(['objectType' => '(domain)'])
 			;
-	       	        
+	             
 		$app->get('/{type:'.implode('|', GetOIDInfoAction::TYPES).'}/{name}', GetOIDInfoAction::class)
 		//	 ->conditions(['objectType' => '('.implode('|', GetOIDInfoAction::TYPES).')'])
 			;      
-					
+				 /* 		*/
 		$app->get('/domains', function( $request,  $response, $args) use ($app,$container){
 			
 			$params = $request->getQueryParams();
