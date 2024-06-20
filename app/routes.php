@@ -71,10 +71,12 @@ HTMLCODE
     $app->group('/', function (Group $group)
 				//(Group $group) 
 				use ($app, $container) {
-      	//		$app->get('/{type:'.implode('|', GetOIDInfoAction::TYPES).'}/{name}', GetOIDInfoAction::class)
          $app->get('/domain-quickinfo/{name}', GetDomainInfoAction::class)
 			// ->conditions(['objectType' => '(domain)'])
 			;
+         $app->get('/x-oidplus-domain/{name}', GetDomainInfoAction::class)
+			// ->conditions(['objectType' => '(domain)'])
+			;	   
 	             
 		$app->get('/{type:'.implode('|', GetOIDInfoAction::TYPES).'}/{name}', GetOIDInfoAction::class)
 		//	 ->conditions(['objectType' => '('.implode('|', GetOIDInfoAction::TYPES).')'])
