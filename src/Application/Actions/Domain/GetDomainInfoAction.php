@@ -34,6 +34,8 @@ final class GetDomainInfoAction
     private $streamFactory;
 	
 	private $container;
+	
+	protected $cache;
 
     public function __construct(ContainerInterface $container, DomainProviderInterface $domainProvider, SerializerInterface $serializer, StreamFactoryInterface $streamFactory)
     {
@@ -41,11 +43,43 @@ final class GetDomainInfoAction
         $this->domainProvider = $domainProvider;
         $this->serializer = $serializer;
         $this->streamFactory = $streamFactory;
+		
+		$this->cache= $this->container->get('rdap.cache');
     }
 
 	public function getCacheKey($domainName){
-		return 'rdap.domain.'.self::CACHE_VERSION.'--'.filemtime(__FILE__).'--'.$domainName;
+		return 'rdap.domain.'.self::CACHE_VERSION
+			//.'-'.filemtime(__FILE__).'-sf-'
+			.sha1($domainName).strlen($domainName);
 	}
+	
+	
+	public function authoritativeLookup(string $name, string $type, ?int $limit = null){
+		if(!\Webfan\RDAP\Rdap::isValidType($type)){
+		  return false;//json_decode('{"error":"domain is not available"}');
+		}
+		//$result =false;
+	    $cache= $this->cache;
+		$item = $cache->getItem($this->getCacheKey('authoritative-lookup'. sha1($name.':'.$type)));
+		if (!$item->isHit()) {   
+		    $item->expiresAfter(is_int($limit) ? $limit : 3 * 60);
+			
+			$client = new \Webfan\RDAP\Rdap($type);				
+					
+			$result =  @$client->rdap($name,true);				
+		   // $result = json_decode($result, \JSON_PRETTY_PRINT );
+			if($result && !is_string($result) ){				
+				//$result= $this->serializer->serialize($result);  	
+				$result= json_encode($result);  
+			}					
+            
+			$item->set($result);
+			$cache->save($item);
+			return $result;
+		}else{		
+			return $item->get();
+		}
+	}	
 	
     public function __invoke(Request $request, Response $response, array $args): Response
     {
@@ -56,7 +90,7 @@ final class GetDomainInfoAction
        
 		set_time_limit(220);
 		
-        $cache= $this->container->get('rdap.cache');
+        $cache= $this->cache;
 		
 		/*	
 		$tempPrivateDirs = __DIR__.'/../../../../cache/rdap/';
@@ -70,270 +104,30 @@ final class GetDomainInfoAction
         },$cache, $tempPrivateDirs, 24 * 60 * 60);	 
 		*/
 		
-		
+	//	ob_start();
 		$item = $cache->getItem($this->getCacheKey($args['domainName']));
+		
+	//	$result = json_decode('{"error":"domain is not available"}');
 		if (!$item->isHit()) {   
-		    $item->expiresAfter(30 * 60);
+		    $item->expiresAfter(30 * 60);			
+			  $result =@$this->authoritativeLookup($args['domainName'], 'domain',120);	
+	          if(!$result || (is_object($result) && isset($result->error)) ){
+				  $result =@$this->domainProvider->get(DomainName::of($args['domainName']));				  
 			
-			$manager = $this->container->get('manager.pdp');
-			$rules = $manager->getRules();
-			
-			$value = 'https://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
-			
-			
-			$href = 'https://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
-			$linkSelf = new Link($href);
-			$linkSelf->setValue($value);
-			$linkSelf->setTitle($args['domainName'].' - Information');
-			$linkSelf->setRel('self');
-			$linkSelf->setType('application/rdap+json');
-			
-		try{	
-			$domainRules = $rules->resolve($args['domainName'], '');
-			
-			$FQN = $domainRules->toAscii()->getContent();            //returns 'nl.shop.bébé.faketld'->getDomain()
-			$root = $domainRules->getPublicSuffix();      //returns 'faketld'
-			$registrable = $domainRules->getRegistrableDomain(); //returns 'bébé.faketld'
-			$subdomain = $domainRules->getSubDomain();         //returns 'nl.shop'
-			$isKnown = $domainRules->isKnown();              //returns false
-		}catch(\Exception $e3){
-			$isKnown=false;
-			$registrable=false;
-			$linkReg=false;
+				  if($result && !is_string($result) ){								
+					  $result= $this->serializer->serialize($result);  				
+				  }			 
+			  }
+				
+			 $item->set($result);
+			 $cache->save($item);	
+		}else{
+		       $result = $item->get();	
 		}
-			
-			
-			$Notice = new Notice('Availability', 'remark', [($isKnown) ? 'The domain is known.' : 'The domain is unknown.']);
-			
-			
-		if($registrable){		
-			$href = 'https://'.$_SERVER['SERVER_NAME'].'/domain/'.$registrable;
-			$linkReg = new Link($href);
-			$linkReg->setValue($value);
-			$linkReg->setTitle('Registrable domain');
-			$linkReg->setRel('reg');
-			$linkReg->setType('application/rdap+json');	
-		}
-			
-			$href = 'https://'.$_SERVER['SERVER_NAME'].'/domain/'.$root;
-			$linkRoot = new Link($href);
-			$linkRoot->setValue($value);
-			$linkRoot->setTitle('Root tld');
-			$linkRoot->setRel('root');
-			$linkRoot->setType('application/rdap+json');			
-						
-			
-	 $linkUp = false;		
-	 if($registrable && $registrable !== $FQN){
-			$href = 'https://'.$_SERVER['SERVER_NAME'].'/domain/'.$registrable;
-			$linkUp = new Link($href);
-			$linkUp->setValue($value);
-			$linkUp->setTitle('Superior domain');
-			$linkUp->setRel('up');
-			$linkUp->setType('application/rdap+json');				
-	 }
-			/*
-		$manager->refreshRules();
-//the rules are saved to the database for 1 day
-//the rules are fetched using GuzzlClient
-
-$rules = $manager->getRules();
-$domainRules = $rules->resolve('nl.shop.bébé.faketld');
-$domainRules->getDomain();            //returns 'nl.shop.bébé.faketld'
-$domainRules->getPublicSuffix();      //returns 'faketld'
-$domainRules->getRegistrableDomain(); //returns 'bébé.faketld'
-$domainRules->getSubDomain();         //returns 'nl.shop'
-$domainRules->isKnown();              //returns false
-
-
-Link:: __construct(string $href)
- setTitle(string $title)
- setValue(string $value)
- setType(string $type)
- setRel(string $rel
-setMedia(string $media)
-*/		
-			
-			
-			
-			
-	
-			try{
-			 $domain = $this->domainProvider->get(DomainName::of($args['domainName']));		
-			// $statuses = $domainRules->getStates();  
-			 $domain->addRdapConformance('rdap_level_0');			
-			 //$domain->addRdapConformance('frdl_level_0');			
-				//  "frdlweb_level_0"
-				
-		//	 $domain->addRdapConformance('frdlweb_level_0');
-				
-			 $domain->addLink($linkSelf);					
-			 $domain->addLink($linkReg);						
-			 $domain->addLink($linkRoot);				
-									
-				if(false !== $linkUp){
-			      $domain->addLink($linkUp);		
-				}
-				
-				$domain->addNotice($Notice);
-				
-		   	$result = $this->serializer->serialize($domain);			
-				
-			}catch(RdapException $e2){			
-				$domain = DomainName::of($args['domainName']);
-			//	 $statuses = $domain->getStates();  
-				$domain->error = $e2->getMessage();
-			
-				
-				
-			if($linkReg && $isKnown && isset($domain->statuses) && is_array($domain->statuses)  && !in_array('invalid', $domain->statuses)){
-				$domain->links = [json_decode($this->serializer->serialize($linkSelf)),
-								 json_decode( $this->serializer->serialize($linkReg)),
-								 json_decode( $this->serializer->serialize($linkRoot))];
-				
-									
-				if(false !== $linkUp){
-			      $domain->links[]=json_decode($this->serializer->serialize($linkUp));		
-				}
-				
-				$domain->remarks=[json_decode($this->serializer->serialize($Notice))];
-			}//$isKnown
-				
-			    $result =json_encode($domain);
-			}catch(\Exception $e){			
-				//$domain =  $this->domainProvider->get(($registrable) ?  DomainName::of($registrable) : DomainName::of($linkRoot));
-				$domain = DomainName::of($args['domainName']);
-				// $statuses = $domain->getStates();  
-				$domain->error = $e->getMessage();
-			
-				
-			if($linkReg && $isKnown && isset($domain->statuses)  && is_array($domain->statuses) && !in_array('invalid', $domain->statuses)){	
-				$domain->links = [json_decode($this->serializer->serialize($linkSelf)),
-								 json_decode( $this->serializer->serialize($linkReg)),
-								 json_decode( $this->serializer->serialize($linkRoot))];
-				
-									
-				if(false !== $linkUp){
-			      $domain->links[]=json_decode($this->serializer->serialize($linkUp));		
-				}
-				
-				$domain->remarks=[json_decode($this->serializer->serialize($Notice))];
-			}//$isKnown
-				
-			    $result =json_encode($domain);
-			}
-          
-					
-            
-					
-		
-			$result = json_decode($result);
-			$res = [];
-		  if(!isset($result->error) 
-			// && $isKnown 
-			 && isset($domain->statuses)  
-			// && is_array($domain->statuses)
-			 
-			// && !in_array('invalid', $result->statuses)
-			){
-			$res['rdapConformance'] = [
-			      'rdap_level_0',
-			       'frdlweb_level_0',
-			];
-		  }else{
-			$res['rdapConformance'] = [
-			      'rdap_level_0',
-			  'frdlweb_level_0',
-			];
-		  }
-			foreach($result as $k => $v){
-			  $res[$k] = $v;	
-			}
-			
-			$res['frdlweb']=[];
-				     $url = 'https://registry.frdl.de/' . 'plugins/viathinksoft/publicPages/100_whois/whois/webwhois.php?query='
-					  .urlencode( 'domain:'.$args['domainName']  )
-					.'$format=json';
-			$c=@file_get_contents($url);
-	 if(false!==$c){		
-			$theInfo = json_decode($c);
-			$_found = is_object($theInfo) && !is_null($theInfo) && 'Found' === $theInfo->oidip->querySection->result && 'Information partially available' !== $theInfo->oidip->objectSection->status;	
-		 
-		 if($_found){
-		        $Info = [
-				'sub'=>[
-					'id'=>$args['domainName'],
-				    'handle'=> 'domain:'.$args['domainName'].'@'.'oid:1.3.6.1.4.1.37476.30.9.1494410075',
-				],
-				'found'=>$_found,
-				'ns'=>[
-					'id'=>'oid:1.3.6.1.4.1.37476.30.9.1494410075',
-					'url'=>'https://registry.frdl.de/',
-					'name'=>'Frdlweb Registration Authority and Webfan Registry',
-				 ],
-				'ra'=>(array)$theInfo->oidip->raSection,
-				'object'=>(array)$theInfo->oidip->objectSection,
-			];	
-
-	    	$res['frdlweb']=[$Info];
-		 }//$_found
-	 } 
-			
-		/*	
-			$c=file_get_contents(
-			//	'https://rdap.frdl.de/host/'.$args['domainName']
-				sprintf('https://registry.frdl.de/plugins/frdl/publicPages/1276945_rdap/rdap/rdap.php?query=%s', 
-						'domain%3A'.$args['domainName'])
-			);
-			
-			
-			
-			
-			//oidplus_oidip
-			//if(!preg_match("/unknown/", $c) ){
-			if(isset($domainRegINfo->oidplus_oidip)){
-				$domainRegINfo=(array)$domainRegINfo->oidplus_oidip->oidip;
-			//	unset($domainRegINfo['objectClassName']);
-				$res['frdl_oidplus'] =[
-					   'ra'=>$domainRegINfo['raSection'],
-					   'object'=>$domainRegINfo['objectSection'],
-					];
-			
-			}else{
-				$res['frdl_oidplus'] = false;
-			}
-			*/
-			
-			
-	/*	
-				
-				$domainRegINfo = [
-					'oidplus_oidip'=>$domainRegINfo,
-				];
-				$res = array_merge_recursive($res, $domainRegINfo);
-			
-		    	$domainRegINfo = $domainRegINfo->oidplus_oidip->oidip;
-				unset($domainRegINfo->rdapConformance);
-				unset($domainRegINfo->name);
-				unset($domainRegINfo->objectClassName);
-				$domainRegINfoAddon = new \stdclass;
-				$domainRegINfoAddon->title = 'Frdlweb IO4 Extensions';
-			//	$domainRegINfoAddon->type = 'remark';
-				$domainRegINfoAddon->type = 'oidip';
-				$domainRegINfoAddon->value = $domainRegINfo;//->objectSection;
-			    $res['notices'][] = $domainRegINfoAddon;	  
-				
-				*/
-			$result = json_encode($res, \JSON_PRETTY_PRINT );
-		/*		*/
-            $item->set($result);
-			$cache->save($item);
-		}//notInCache
-		
-		$serialized = $item->get();
-		
-        return $response->withHeader('Content-Type', 'application/rdap+json')
-            ->withStatus(200)
-            ->withBody($this->streamFactory->createStream($serialized));
+		        $serialized = !is_string($result) ?  json_encode($result) : $result;
+		  //  ob_end_clean();
+             return $response->withHeader('Content-Type', 'application/rdap+json')
+               ->withStatus(200)
+               ->withBody($this->streamFactory->createStream($serialized));		
     }
 }
