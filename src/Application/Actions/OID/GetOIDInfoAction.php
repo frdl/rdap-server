@@ -170,7 +170,8 @@ class GetOIDInfoAction
 	
 	
 	public function getCacheKey($type, $name){
-		return 'rdap.34'.$type.'.'.self::CACHE_VERSION.'-'.filemtime(__FILE__).'-'
+		return 'rdap.dcc34'.$type.'.'.self::CACHE_VERSION.'-'
+			//.filemtime(__FILE__).'-'
 			.sha1($name).'l'.strlen($name);
 	}
 	
@@ -247,10 +248,17 @@ class GetOIDInfoAction
 	}
 	
 	
-	
+
+	public function siteURL(){
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+    $domainName = $_SERVER['HTTP_HOST'].'/';
+    return $protocol.$domainName. $_SERVER['REQUEST_URI'];
+	}	
 	
     public function __invoke(Request $request, Response $response, array $args): Response
     {
+	//	ini_set('display_errors', '0');
+		ob_start();
         if (empty($args['name'])) {
             throw new \BadMethodCallException('name is missing');
         }
@@ -266,11 +274,11 @@ class GetOIDInfoAction
 		}		
 		
 		set_time_limit(180);
-		$cacheKey = $this->getCacheKey('type:'.$args['type'], 'name:'.$args['name']);
+		$cacheKey = $this->getCacheKey('ALL-type:'.$args['type'], 'ALL-name:'.$args['name']);
 	    $cache= $this->cache;	 
 		
 		$item = $cache->getItem($cacheKey);
-		$itemOidplusInstanceFor = $cache->getItem($this->getCacheKey('oidplus-instance-for', $args['type'].':'.$args['name']));
+		$itemOidplusInstanceFor = $cache->getItem($this->getCacheKey('RESULT-oidplus-instance-for', $args['type'].':'.$args['name']));
 
 		
 
@@ -377,11 +385,31 @@ class GetOIDInfoAction
 				$url =$instance['url'].'$format=json';
 				 	 die('<pre>'.print_r($url,true));
 					 */
-					   
-				$theInfo = @file_get_contents($url);
+	  
+	   $referer = $this->siteURL();
+	   $userAgent ='Rdap+Client (Webfan/Frdlweb+'.$_SERVER['HTTP_HOST'].')';
+       $options = array(
+           'http'=>array(		
+	          'ignore_errors' => true,			 
+		   'follow_location' => true,
+              'method'=>"GET",
+              'header'=>"Accept-language: en\r\n" 
+		   // ."Cookie: foo=bar\r\n"
+                 . "User-Agent: $userAgent\r\n"  
+		 ."Referer: $referer\r\n"
+            )
+        );
+
+	   
+         $context = stream_context_create($options);
+				
+				$theInfo = @file_get_contents($url, false, $context);
 				if(false === $theInfo)continue;
 				$theInfo = @json_decode($theInfo);
-				if(!is_object($theInfo) || null === $theInfo || false === $theInfo)continue;
+				if(!is_object($theInfo) 
+				  // || null === $theInfo || false === $theInfo
+				  || !isset( $theInfo->oidip)
+				  )continue;
 				$_found = 'Found' === $theInfo->oidip->querySection->result
 					&& 'Information partially available' !== $theInfo->oidip->objectSection->status;			
 				
@@ -391,7 +419,10 @@ class GetOIDInfoAction
 				  continue;	
 				}
 				
-				if(!$_found && (isset($_GET['partially']) && $_GET['partially'] === 'first') ){
+				if(false===$_found 
+				   //&& (isset($_GET['partially']) && $_GET['partially'] === 'first') 
+				  
+				  ){
 					 continue;	
 				}
 				
@@ -401,13 +432,21 @@ class GetOIDInfoAction
 				
 				$ext = [];
 				
+				try{
+				  $description = isset($theInfo->oidip->objectSection->description)
+					  ? (string)((array)$theInfo->oidip->objectSection)['description']
+					  : '';
+				}catch(\Exception $e){
+					$description = '';
+				}
+			 
 				$tmpfname = tempnam(\sys_get_temp_dir(), 'rdap-extra-info-from-dec-inilike'); 
 				file_put_contents($tmpfname,
 								  '\n'.
 								  '\n'.
 							implode('\n', preg_split("/(\n\r)/",    
 								 strip_tags(
-								  (string)((array)$theInfo->oidip->objectSection)['description']
+								  $description
 								 )))
 								);
 				 
@@ -577,7 +616,10 @@ class GetOIDInfoAction
 		    $cache->save($itemOidplusInstanceFor);
 		}
 		$serialized = $item->get();
-		
+		if(!is_string($serialized)){
+			$serialized = json_encode($serialized, \JSON_PRETTY_PRINT);
+		}
+		ob_end_clean();
         return $response->withHeader('Content-Type', 'application/rdap+json')
             ->withStatus(200)
             ->withBody($this->streamFactory->createStream($serialized));
