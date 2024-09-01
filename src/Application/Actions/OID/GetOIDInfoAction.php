@@ -99,7 +99,7 @@ class GetOIDInfoAction
 	
 				   //  '\~',
 				 //  'web+fan',
-	const CACHE_VERSION = '0.2.2';
+	const CACHE_VERSION = '0.2.4';
 	const TYPES = ['oid', 
 				   'weid', 
 				   'doi',
@@ -188,9 +188,9 @@ class GetOIDInfoAction
 				 $sub=explode(' ', $sub);
 				 $sub=$sub[0]; 
 				 try{
+				
 				 $instanceInfo = json_decode(file_get_contents('https://hosted.oidplus.com/viathinksoft/plugins/viathinksoft/publicPages/100_whois/whois/webwhois.php?query='.urlencode($sub).'$format=json'));
-					 
-					 
+		
 					 	              $description = $instanceInfo->oidip->objectSection->description;
 							      $registryName = $instanceInfo->oidip->objectSection->name;							
 									preg_match("/System\sID\:\d\sLast\sknown\sURL\:([^\s]+)\s/", $description, $matches);
@@ -403,13 +403,23 @@ class GetOIDInfoAction
 	   
          $context = stream_context_create($options);
 				
+				//$theInfo = @file_get_contents($url, false, $context);
+				
+				$theInfo2 = @file_get_contents($urlRdap, false, $context);				
 				$theInfo = @file_get_contents($url, false, $context);
-				if(false === $theInfo)continue;
+				
+				if(false === $theInfo && false === $theInfo2)continue;
 				$theInfo = @json_decode($theInfo);
+				//print_r($urlRdap);
+				//print_r($theInfo);
+				if(is_object($theInfo) && is_object($theInfo2) ){
+				 $theInfo = (object) array_merge_recursive((array) $theInfo, (array) $theInfo2);
+				}
 				if(!is_object($theInfo) 
 				  // || null === $theInfo || false === $theInfo
 				  || !isset( $theInfo->oidip)
 				  )continue;
+				
 				$_found = 'Found' === $theInfo->oidip->querySection->result
 					&& 'Information partially available' !== $theInfo->oidip->objectSection->status;			
 				
