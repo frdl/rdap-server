@@ -2,78 +2,7 @@
 declare(strict_types=1);
 
 
-namespace Env{
 
-use \ErrorException;
-use \ValueError;
-
-use function \parse_ini_file;
-use function \realpath;
-
-use const \INI_SCANNER_RAW;
-use const \INI_SCANNER_TYPED;
-
-final class Dotenv
-{
-	const CREDITS = '/*! https://github.com/sabroan/php-dotenv/blob/main/LICENSE
-MIT License
-
-Copyright (c) 2023 Serhii Babinets
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-*/';
-       
-public static function toArray(string $path, bool $strict = false, bool $sections = false): array | bool
-    {
-        $realpath = @realpath($path);
-        if (false === $realpath || !file_exists($realpath) || !is_file($realpath)) {
-           $env = \parse_ini_string(
-            ini_string: $path,
-            process_sections: $sections,
-            scanner_mode: ($strict)
-                ? INI_SCANNER_RAW
-                : INI_SCANNER_TYPED
-           );
-          if ($env) {
-            return $env;
-          }else{
-			 return false;  
-		  }
-        }
-		
-		
-        $env = parse_ini_file(
-            filename: $realpath,
-            process_sections: $sections,
-            scanner_mode: ($strict)
-                ? INI_SCANNER_RAW
-                : INI_SCANNER_TYPED
-        );
-        if ($env) {
-            return $env;
-        }else{
-			 return false;  
-		  }
-       // throw new ErrorException("Unable to parse $realpath");
-    }
-}
-}//ns Env
 
 
 
@@ -254,6 +183,66 @@ class GetOIDInfoAction
     $domainName = $_SERVER['HTTP_HOST'].'/';
     return $protocol.$domainName. $_SERVER['REQUEST_URI'];
 	}	
+	
+   protected function frdl_array_unflatten(array $arr, $delimiter = '.', $depth = -1)
+    {
+        $output = [];
+        foreach ($arr as $key => $value) {
+        if(($parts = @preg_split($delimiter, $key, -1)) === false){
+           //pattern is broken
+          $parts = ($depth>0)?explode($delimiter, $key, $depth):explode($delimiter, $key);
+           }else{
+           //pattern is real
+
+           }
+        //$parts = ($depth>0)?explode($delimiter, $key, $depth):explode($delimiter, $key);
+        $nested = &$output;
+        while (count($parts) > 0) {
+          $nested = &$nested[array_shift($parts)];
+          if (!is_array($nested)) $nested = [];
+        }
+        $nested[array_shift($parts)] = $value;
+        }
+        return $output;
+    }
+
+	
+	
+	protected function frdl_ini_dot_parse(string $text, ?bool $clear = false) : array {
+	
+	$ext = [];
+	$unf = [];
+    $find = "/(?P<name>[A-Z0-9\-\_\.\"\']+)(\s|\n)(\:|\=)(\s|\n)(?P<value>[^\s]+)/xs";		          
+	preg_match_all($find, $text, $matches, \PREG_PATTERN_ORDER);
+	
+	if(true === $clear){
+      while(preg_match($find, $text)) {
+        $text = preg_replace($find, '', $text);
+		$text = str_replace('[@]', '', $text);  
+      }
+	}
+		
+	foreach($matches[0] as $k => $v){						
+		$ext[$matches['name'][$k]] = $matches['value'][$k];				
+	}
+				         
+		            foreach($ext as $ka => $v){
+						$k = explode('.', $ka, 2)[0];
+					
+						if(is_numeric($k) 
+						    && intval($k) > 0
+						  ){	 
+							$unf[$ka] = $v;
+						}
+					}
+ 
+		            $ext = $this->frdl_array_unflatten($ext, '.', -1);
+		
+		           foreach($unf as $k => $v){ 
+							$ext[$k] = $v; 
+					}	      
+	return ['data'=>$ext, 'content'=>$text];
+   }
 	
     public function __invoke(Request $request, Response $response, array $args): Response
     {
@@ -450,6 +439,7 @@ class GetOIDInfoAction
 					$description = '';
 				}
 			 
+				/*
 				$tmpfname = tempnam(\sys_get_temp_dir(), 'rdap-extra-info-from-dec-inilike'); 
 				file_put_contents($tmpfname,
 								  '\n'.
@@ -465,8 +455,11 @@ class GetOIDInfoAction
 					, true, true)
 					;
 				unlink($tmpfname);
-				
-				
+				*/
+				$extraInfo = $this->frdl_ini_dot_parse($description)['data'];
+				if(0===count($extraInfo)){
+				  $extraInfo = false;	
+				}
 							
 				if(!$extraInfo && (!isset($_GET['partially']) || $_GET['partially'] !== 'include') ){
 					 
