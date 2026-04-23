@@ -29,7 +29,10 @@
 		}
     ],	  
   "config": {
-    "platform-check" : false
+    "platform-check" : false,
+	"preferred-install": {
+            "*": "dist"        
+	}
   }, 
   "minimum-stability": "dev",
   "prefer-stable": true,
